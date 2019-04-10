@@ -8,7 +8,7 @@ int numOfTestcase, totalStudent, numOfFriendPair;
 
 
 bool areFriends[10][10]={false};
-int havePair[10]={false};
+bool havePair[10]={false};
 
 int countPairs(bool havePair[10]){
 
@@ -25,7 +25,7 @@ int countPairs(bool havePair[10]){
 
     if(minFree==-1) return 1;
 
-    int ret =0;
+    int count =0;
 
     for(int student= minFree+1; student<totalStudent; student++ ){
 
