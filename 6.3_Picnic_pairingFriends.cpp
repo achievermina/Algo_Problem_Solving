@@ -1,4 +1,4 @@
-#include <iostream>
+#include<iostream>
 using namespace std;
 
 
@@ -10,12 +10,13 @@ int numOfTestcase, totalStudent, numOfFriendPair;
 bool areFriends[10][10]={false};
 bool havePair[10]={false};
 
+
 int countPairs(bool havePair[10]){
 
-
+    int count =0;
     int minFree = -1;
 
-    for(int i=0; i<10; i++){
+    for(int i=0; i<totalStudent; i++){
         if(!havePair[i]){
             minFree = i;
             break;
@@ -25,10 +26,7 @@ int countPairs(bool havePair[10]){
 
     if(minFree==-1) return 1;
 
-    int count =0;
-
     for(int student= minFree+1; student<totalStudent; student++ ){
-
         if(!havePair[student]&& areFriends[minFree][student]){
             //find first pair
             havePair[minFree] = true;
@@ -57,18 +55,20 @@ int main() {
 
         cin>>totalStudent>>numOfFriendPair;
 
-//        bool* areFriends[totalStudent][totalStudent]={false};
-//        bool* havePair[totalStudent]={false};
+        //        bool* areFriends[totalStudent][totalStudent]={false};
+        //        bool* havePair[totalStudent]={false};
 
 
         //Set up the areFriends table
         int x,y;
-        for(int j=1; j<=numOfFriendPair; numOfFriendPair++){
+        for(int j=0; j<numOfFriendPair; j++){
 
             cin>>x>>y;
             areFriends[x][y]=areFriends[y][x]=true;
         }
-        cout<<countPairs(havePair);
+
+
+        cout<<countPairs(havePair)<<endl;
 
     }
 
