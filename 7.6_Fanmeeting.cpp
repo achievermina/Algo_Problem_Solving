@@ -2,6 +2,21 @@
 using namespace std;
 
 
+// a += b*10^k
+void addTo(vector<int>& a, const vector<int>& b, int k){
+    a.resize(b.size()+k);
+    for(int i =0; i<b.size(); i++){
+        a[i+k]+=b[i];
+    }
+    normalize(a);
+
+}
+
+void subFrom(vector<int>& a, const vector<int>& b){
+
+
+}
+
 vector<int> karatsuba(const vector<int>& a, const vector<int>& b){
     int an = a.size();
     int bn= b.size();
@@ -28,7 +43,8 @@ vector<int> karatsuba(const vector<int>& a, const vector<int>& b){
 
     z2 = karatsuba(a1, b1);
     z0 = karatsuba(a0,b0);
+    addT0(a0, a1, 0);
 
-
+//z1
 
 }
