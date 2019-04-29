@@ -25,10 +25,42 @@ bool match(const string& w, const string& s){
 
 }
 
+//String is max 100
+int cache[101][101] ={-1};
+string W,S;
+
+//Big O(n^3)
+int matchMemoized(int w, int s){
+    int& ret =cache[w][s];
+
+    if(ret != -1)
+        return ret;
+
+    while(s<S.size() && w<W.size() && (W[w]=='?' || W[w] ==S[s])){
+        ++w;
+        ++s;
+    }
+
+    //after while loop
+    //check how many alphabets matching to *
+    if(W[w]=='*')
+        for(int skip =0; skip+s <=S.size(); ++skip){
+            if(matchMemoized(w+1, s+skip))
+                return ret=1;
+        }
+
+    return ret = 0;
+}
+
 int main(){
     string a,b;
 
     cin>>a>>b;
-    cout<<"The word "<<a<<" and "<<b<<" are mathced?\n"<<match(a,b)<<endl;
+    cout<<"The word "<<a<<" and "<<b<<" are matched?\n"<<match(a,b)<<endl;
+
+
+
+    cout<<"The word "<<a<<" and "<<b<<" are matched?\n"<<matchMemoized(0,0)<<endl;
+
 
 }
