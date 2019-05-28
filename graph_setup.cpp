@@ -2,7 +2,7 @@
  
  Developer: Mina
  Last_updeated:  05/28/19
- Title: Graph
+ Title: Undirected Graph Setup
  reference: https://www.sanfoundry.com/cpp-program-implement-adjacency-list
  
  */
@@ -79,8 +79,23 @@ public:
         return visitedVertex;
     }
 
-    
+//    void printGraph()
+//    {
+//        int v;
+//        for (v = 0; v < V; ++v)
+//        {
+//            node* pCrawl = adjList[v].head;
+//            cout<<"\n Adjacency list of vertex "<<v<<"\n head ";
+//            while (pCrawl)
+//            {
+//                cout<<"-> "<<pCrawl->dest;
+//                pCrawl = pCrawl->next;
+//            }
+//            cout<<endl;
+//        }
+//    }
 };
+
 
 
 
@@ -96,5 +111,7 @@ int main() {
     gh.addEdge(2, 3);
     gh.addEdge(3, 4);
     
+    //gh.printGraph();
+
     return 0;
 }
