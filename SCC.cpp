@@ -63,7 +63,7 @@ public:
     
     
     //Save the decreasing order of traversal time using stack
-    void traverse(int org, stack<int> s){
+    void traverse(int org, stack<int>* s){
         bool visited[this->v];
         
         
@@ -85,16 +85,24 @@ public:
         
     }
     
-    void explore2(int org, bool visited[], stack<int> s){
+    void explore2(int org, bool visited[], stack<int>* s){
         visited[org]=true;
         
         list<int>::iterator it;
         for(it= adj[org].begin(); it!= adj[org].end(); it++){
             if(visited[*it]==false){
                 explore2(*it,visited, s);
-                s.push(*it);
+                
+                //stack is for checking the traverse in post-order
+                //stack에 넣는 이 부분의 위치가 중요함 -- *it을 넣는게 아니라 org을 넣으면되잖아
+                
             }
         }
+        
+        cout<<org<<" stack in"<<endl;
+        (*s).push(org); //stack이 정보 저장을 안해서 referense 로 사용
+        //http://www.cplusplus.com/forum/beginner/47794/
+        
     }
     
     //Transpose the edges
@@ -106,7 +114,6 @@ public:
         for(int i=0; i<this->v; i++){
             for(list<int>::iterator it =adj[i].begin(); it!=adj[i].end(); it++){
                 reversed.addEdge(*it,i);
-                ////내부함수 사용이 안됨 ㅠㅜㅜ
             }
         }
         
@@ -124,17 +131,22 @@ public:
     //ver2 - find the strongly connectec graph
         //using array connect each vertex with the index of SCC
     int SCC(int org){
-        int numSC[this->v];
+        
+        //int numSC[this->v];
         bool visited[this->v];
         int SCC=0, source;
         
+        //set up visited
         for(int i=0; i<this->v; i++){
             visited[i]= false;
         }
-        
+
+        //transpose the graph
         graph reversed = transpose();
+        reversed.printGraph();
+        
         stack<int> reversedPostOrder;
-        reversed.traverse(org,reversedPostOrder);
+        reversed.traverse(org,&reversedPostOrder);
         
         while(!reversedPostOrder.empty()){
             source = reversedPostOrder.top();
@@ -142,9 +154,22 @@ public:
                 SCC++;
                 explore(source, visited);
             }
+            reversedPostOrder.pop();
         }
         return SCC;
     
+    }
+    
+    void printGraph(){
+        
+        for(int i=0; i<this->v; i++){
+            
+            cout<<"vertex "<<i<<endl;
+            for(list<int>::iterator it = adj[i].begin(); it!= adj[i].end(); it++){
+                cout<<" to "<<(*it)<<endl;
+            }
+        }
+        
     }
 };
 
@@ -157,6 +182,8 @@ int main(){
     gh.addEdge(1, 3);
     
     gh.DFS(1);
+    
+    gh.printGraph();
     
     cout<<"The number of SCC is "<<gh.SCC(1);
     
