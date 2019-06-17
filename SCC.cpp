@@ -93,14 +93,14 @@ public:
             if(visited[*it]==false){
                 explore2(*it,visited, s);
                 
-                //stack is for checking the traverse in post-order
-                //stack에 넣는 이 부분의 위치가 중요함 -- *it을 넣는게 아니라 org을 넣으면되잖아
+                
                 
             }
         }
-        
-        cout<<org<<" stack in"<<endl;
-        (*s).push(org); //stack이 정보 저장을 안해서 referense 로 사용
+        (*s).push(org); //stack이 정보 저장을 안해서 reference 로 사용
+        //stack is for checking the traverse in post-order
+        //stack에 넣는 이 부분의 위치가 중요함 -- *it을 넣는게 아니라 org을 넣으면되잖아
+        //cout<<org<<" stack in"<<endl;
         //http://www.cplusplus.com/forum/beginner/47794/
         
     }
@@ -143,11 +143,15 @@ public:
 
         //transpose the graph
         graph reversed = transpose();
-        reversed.printGraph();
+        //cout<<"revesed graph "<<endl;
+        //reversed.printGraph();
         
         stack<int> reversedPostOrder;
         reversed.traverse(org,&reversedPostOrder);
         
+
+        
+        //original graph
         while(!reversedPostOrder.empty()){
             source = reversedPostOrder.top();
             if(visited[source]==false){
@@ -180,12 +184,14 @@ int main(){
     gh.addEdge(0, 4);
     gh.addEdge(1, 2);
     gh.addEdge(1, 3);
-    
+    gh.addEdge(3, 0);
+
     gh.DFS(1);
     
     gh.printGraph();
     
-    cout<<"The number of SCC is "<<gh.SCC(1);
+    cout<<"The number of SCC is "<<endl;
+    cout<<gh.SCC(1)<<endl; //Correct answer is 3
     
 }
 
