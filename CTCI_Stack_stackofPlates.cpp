@@ -18,7 +18,6 @@
 using namespace std;
 
 #define STACKMAX 5
-#define SETSIZE 100
 
 class SetOfStacks{
 public:
@@ -26,12 +25,13 @@ public:
     int stackIdx;
     //vector of pointers
     vector<stack<int>*> stackArr;
+
     
     SetOfStacks(){
         stackIdx =0;
         countElements =0;
-        stack<int> s;
-        (stackArr).push_back(&s);
+        stack<int>* s = new stack<int>; //dynamic allocation
+        (stackArr).push_back(s);
     }
     
     bool checkEnoughSize(stack<int> currentStack){
@@ -47,43 +47,59 @@ public:
         if(checkEnoughSize(currentStack)){
             (*(stackArr[stackIdx])).push(value);
         }else{
-            stack<int> sNew = createNewStack();
-            sNew.push(value);
+            stack<int>* sNew = createNewStack();
+            sNew->push(value); //pointer uses ->
         }
         countElements++;
         cout<<"pushed value of "<<value<<endl;
         cout<<"stack number "<<stackIdx+1<<endl;
     }
     
-    stack<int> createNewStack(){
-        stack<int> newS;
+    stack<int>* createNewStack(){
+        stack<int>* newS =new stack<int>;
         stackIdx++;
-        stackArr[stackIdx] = &newS;
-        countElements =0;
-        
+        //stackArr[stackIdx] = newS; // 이렇게 assign하면 안되고 push_back해야돼
+        stackArr.push_back(newS);
         return newS;
     }
     
     void pop(){
-        stack<int> currentStack = *stackArr[stackIdx];
+        //stack<int> currentStack = *stackArr[stackIdx]; // wrong version. 이렇게 하면 함수 안에서만 바뀌고 밖에는 안됨
+        stack<int>* currentStack = stackArr[stackIdx]; //bring the stack using pointer and modify the original one
 
-        if(currentStack.empty()){
-            stackIdx --;
-            currentStack = *stackArr[stackIdx];
-            cout<<"popped value of "<<currentStack.top()<<endl;
-            currentStack.pop();
-        }else{
-            cout<<"popped value of "<<currentStack.top()<<endl;
-            currentStack.pop();
-        }
-        
+        int value = currentStack->top();
+        currentStack->pop();
+        countElements--;
+        cout<<"popped value of "<<value<<endl;
         cout<<"stack number "<<stackIdx+1<<endl;
+        
+        if(currentStack->empty()){ //For push we check the size, so we shouldn't have any empty stack
+            stackIdx --;
+            delete currentStack;
+            cout<<"stack  "<<stackIdx+2<<" is deleted"<<endl;;
+        }
+
     }
     
     
-//    int popAt(int index){
-//        pass;
-//    }
+    void popAt(int index){
+        //error
+        if(index-1>stackIdx){
+            cout<<"Error! Check with the index"<<endl;
+        }else{
+            stack<int>* currentStack = stackArr[(index-1)];
+            cout<<"popped value of "<<currentStack->top()<<" at the stack of "<<index<<endl;
+            currentStack->pop();
+            
+            if(currentStack->empty()){
+                stackIdx--;
+                delete currentStack;
+                cout<<"stack  "<<stackIdx+2<<" is deleted"<<endl;;
+
+            }
+            
+        }
+    }
     
 
 };
@@ -100,6 +116,16 @@ int main(){
     haha.push(10);
 
     haha.pop();
+    haha.pop();
+    haha.pop();
+    haha.pop();
+
+    haha.push(8);
+    haha.push(9);
+    haha.push(10);
+    
+    haha.popAt(1);
+
     
     
 }
