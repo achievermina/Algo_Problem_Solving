@@ -3,17 +3,19 @@
 class Solution {
 public:
     bool isValidBST(TreeNode* root) {
+        if(root->left == NULL && root->right == NULL)
+            return true;
         
-        return recursiveCheck(root, NULL, NULL);
+        return recursiveCheck(root, -999999999, 99999999999);
     }
     
     bool recursiveCheck(TreeNode* node, int min, int max){
-        if(node == NULL)
+        if(node == NULL )
             return true;
         
-        if( min !=NULL &&  node->val <= min )
+        if( node->val <= min )
             return false;
-        if( max !=NULL && node->val >= max  )
+        if( node->val >= max  )
             return false;
         
         
@@ -23,8 +25,32 @@ public:
 
 
 
+/*
+ Modified version
+ #define NULL 0
+ min max are 0 -->  we cannot work with negative values
+ */
 
-
+class Solution {
+public:
+    bool isValidBST(TreeNode* root) {
+        
+        return checkNode(root, INT_MIN, INT_MAX);
+    }
+    
+    bool checkNode(TreeNode* node, long long min, long long max){
+        if (node == NULL) {
+            return true;
+        }
+        
+        if (!(min <= node->val && node->val <= max)) {
+            return false;
+        }
+        
+        return checkNode(node->left, min, (long long)node->val - 1) &&
+        checkNode(node->right, (long long)node->val + 1, max);
+    }
+};
 
 /*
 
