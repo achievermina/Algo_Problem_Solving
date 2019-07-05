@@ -15,12 +15,11 @@ int coins(int n){
     int mem[n+1][4];
     
     for(int i =1; i<=n; i++) mem[i][0] = 1;
-    for(int j=0; j<4; j++) mem[0][j] =0;
-    
-    
+    for(int j=0; j<4; j++) mem[0][j] =1; // when money is 0 -> set 0? but 1 is right for calculations
+        
     for(int i =1; i<=n; i++){
         for(int j=1; j<4; j++){
-            if(i%5 ==0 && i>=coin[j])
+            if(i>=coin[j])
                 mem[i][j]=mem[i-coin[j]][j] +mem[i][j-1];
             else
                 mem[i][j]=mem[i][j-1];
@@ -30,10 +29,9 @@ int coins(int n){
     return mem[n][3];
 }
 
-///Need to fix --the answer is not correct
 
 
 int main(){
-    cout<<"The numberof ways of representing n cents is "<<coins(15)<<endl;
+    cout<<"The numberof ways of representing n cents is "<<coins(10)<<endl;
     
 }
