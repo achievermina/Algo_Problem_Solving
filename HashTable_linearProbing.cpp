@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <string>
+#include <vector>
 using namespace std;
 
 
@@ -26,6 +27,7 @@ class hashMap{
     int size;
     int element;
     hashNode* node;
+    hashNode* del;
     hashNode** hashArr;
     
 public:
@@ -46,18 +48,19 @@ public:
         int originalIdx = calculateIndex(key);
         int idx = originalIdx;
         
-        if(element>size){
-            cout<<"No more space size: "<<size<<" and filled: "<<element<<endl;
+        if(element>=size){
+            cout<<"No more space size: "<<size<<" and tried to fill the : "<<element+1<<endl;
             return;
         }
         
         hashNode* newNode = new hashNode(key,value);
   
-        if(hashArr[idx] == NULL || hashArr[idx]->key==key ){ //the second case should not increase the element
+        if(hashArr[idx] == NULL || hashArr[idx] == del){
             hashArr[idx] = newNode;
             element ++;
+        }else if( hashArr[idx]->key==key ){
+            hashArr[idx] = newNode;
         }else{
-        
             while(hashArr[idx] != NULL){
                 idx ++;
                 if(idx>=size)
@@ -75,16 +78,34 @@ public:
     }
     
     
-    void deleteKey(int key){
+    void deleteKey(int searchKey){
+        int originalIdx = calculateIndex(searchKey);
+        int idx = originalIdx;
         
+        if(get(searchKey)==NULL){
+            return;
+        }
+        
+        if(hashArr[idx]->key ==searchKey){
+            hashArr[idx]= del;
+        }else{
+            while(hashArr[idx]->key !=searchKey){
+                idx++;
+                if(idx>=size)
+                    idx=0;
+            }
+            hashArr[idx]= del;
+        }
     }
     
-    void get(int searchKey){
+    
+    int get(int searchKey){
         int originalIdx = calculateIndex(searchKey);
         int idx =originalIdx;
         
         if(hashArr[idx]->key ==  searchKey){
             cout<<"Found key: "<<searchKey<<" and value: "<<hashArr[idx]->value<<endl;
+            return idx;
         }else{
             while(hashArr[idx]->key !=  searchKey){
                 idx ++;
@@ -93,10 +114,11 @@ public:
                 
                 if(idx==originalIdx){
                     cout<<" No such key found"<<endl;
-                    return;
+                    return NULL;
                 }
             }
             cout<<"Found key: "<<searchKey<<" and value: "<<hashArr[idx]->value<<endl;
+            return idx;
             
         }
     }
@@ -104,10 +126,11 @@ public:
     void display(){
         for(int i=0; i<size ; i++)
         {
-            if(hashArr[i] != NULL)
-                cout << "key = " << hashArr[i]->key
-                <<"  value = "<< hashArr[i]->value << endl;
+            if(hashArr[i] != NULL && hashArr[i] != del){
+                cout << "key = " << hashArr[i]->key<<"  value = "<< hashArr[i]->value << endl;
+            }
         }
+        cout<<"-----------------------"<<endl;
     }
 };
 
@@ -123,11 +146,16 @@ int main(){
     
     h->insert(3,"d");
     h->insert(5,"e");
+
     h->insert(0,"f");
+
     
+    h->deleteKey(2);
     h->display();
+
+    h->get(7);
     
-    h->get(2);
-    
+    h->deleteKey(9);
+    h->display();
     return 0;
 }
