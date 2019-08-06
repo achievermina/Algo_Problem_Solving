@@ -24,24 +24,24 @@ using namespace std;
 //Traverse Each Node
 
 //Recursively try all paths, find the target sum -> Increase the total
+//Brute Force
+int count=0;
+int sum=0;
 
-int total=0;
+void countPathsWithSum(TreeNode* node, int targetSum){
 
-int countPathsWithSum(TreeNode* node, int targetSum){
-    int sum=0;
     
     //Recursive sum
     TreeNode* cur;
     
-    //base case
-    if(root-> right == NULL && root-> left ==NULL) return sum+node->val;
-    
+    //Base case
+    if(node==NUll) return 0;
     
     //Check the sum
-    if(sum==targetSum) total++;
+    if(targetSum - node->val ==0) count++;
     
-    
-    
+    countPathsWithSum(root-> right, targetSum-(node->val));
+    countPathsWithSum(root-> left, targetSum-(node->val));
     
     
 }
